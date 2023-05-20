@@ -4,9 +4,11 @@ void setup()
 {
   Serial.begin(115200);
 
-  display::initScreen();
-  display::clear();
+  display::init();
   display::initIo();
+  display::clear();
+
+  wifi::init();
 }
 
 void loop()

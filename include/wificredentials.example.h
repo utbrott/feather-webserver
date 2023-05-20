@@ -1,5 +1,5 @@
-#ifndef WIFICONFIG_H
-#define WIFICONFIG_H
+#ifndef WIFICREDENTIALS_H
+#define WIFICREDENTIALS_H
 
 /**
  * @brief WiFi network name (SSID)
@@ -12,10 +12,4 @@
  */
 #define WIFI_PASS "YOUR_NETWORK_PASS"
 
-/**
- * @brief Hardware pinout for WiFi expansion board
- * @note See: https://learn.adafruit.com/adafruit-feather-m0-wifi-atwinc1500
- */
-#define WIFISHIELD_PINS 8, 7, 4, 2
-
-#endif /* WIFICONFIG_H */
+#endif /* WIFICREDENTIALS_H */
