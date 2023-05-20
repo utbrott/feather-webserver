@@ -7,7 +7,6 @@ void setup()
   display::initScreen();
   display::clear();
   display::initIo();
-  display::initText();
 }
 
 void loop()

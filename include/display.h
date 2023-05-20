@@ -15,13 +15,12 @@
 #define BTN_B 6
 #define BTN_C 5
 
-#define DISPLAY_ADDR 0x3c
+#define DISPLAY_ADDR 0x3C
 
 namespace display
 {
-    void initScreen(void);
+    void init(void);
     void initIo(void);
-    void initText(void);
     void clear(void);
 }
 
