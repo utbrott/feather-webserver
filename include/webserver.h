@@ -6,8 +6,10 @@
 #include <WiFi101.h>
 #include "wificonfig.h"
 #include "display.h"
+#include "webpage.h"
 
 #define SERVER_PORT 80
+#define BODY_TAB_IDX 7
 
 namespace webserver
 {
@@ -23,6 +25,8 @@ namespace webserver
 
     void init(void);
     void printIp(void);
+    void serve(StoredData_t *data);
+    void serveData(StoredData_t *data);
 }
 
 #endif /* WEBSERVER_H */
