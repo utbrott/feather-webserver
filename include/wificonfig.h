@@ -17,8 +17,13 @@
 
 namespace wifi
 {
+    /**
+     * @brief WiFi client object.
+     */
+    extern WiFiClient client;
     void init(void);
     void printStatus(void);
+    String getLocalIp(IPAddress ip);
 }
 
 #endif /* WIFICONFIG_H */

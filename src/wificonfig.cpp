@@ -1,9 +1,9 @@
 #include "wificonfig.h"
 
-WiFiClient client;
-
 namespace wifi
 {
+    WiFiClient client;
+
     void init(void)
     {
         display::clear();
@@ -23,7 +23,7 @@ namespace wifi
         pinMode(LED_BUILTIN, OUTPUT);
         debug::println(debug::INFO, "Attempting connection to: " + String(WIFI_SSID));
 
-        display::println("Connecting...", 0, 0, display::font_6x8);
+        display::println("Connecting...", 0, 1, display::font_6x8);
 
         while (WiFi.status() != WL_CONNECTED)
         {
@@ -36,15 +36,24 @@ namespace wifi
         }
 
         digitalWrite(LED_BUILTIN, 1);
-
         printStatus();
-
-        display::clear();
-        display::println("Connected", 0, 0, display::font_6x8);
     }
 
     void printStatus(void)
     {
         debug::println(debug::INFO, "Connected to: " + String(WiFi.SSID()) + " (" + String(WiFi.RSSI()) + "dBm)");
+        debug::println(debug::INFO, "Local IP: " + getLocalIp(WiFi.localIP()));
+    }
+
+    String getLocalIp(IPAddress ip)
+    {
+        String addr;
+        for (u8 i = 0; i < 3; ++i)
+        {
+            addr += String(ip[i], DEC);
+            addr += ".";
+        }
+        addr += String(ip[3]);
+        return addr;
     }
 }

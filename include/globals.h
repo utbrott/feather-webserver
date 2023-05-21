@@ -10,4 +10,6 @@ typedef uint32_t u32;
 typedef float f32;
 typedef double f64;
 
+#define INVERT(x) (x = (x + 1) % 2)
+
 #endif /* GLOBALS_H */

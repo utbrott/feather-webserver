@@ -7,6 +7,5 @@
 #include "webserver.h"
 #include "display.h"
 
-#define INVERT(x) (x = (x + 1) % 2)
 
 #endif /* MAIN_H */
