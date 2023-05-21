@@ -7,6 +7,7 @@
 #include <WiFi101.h>
 #include "wificredentials.h"
 #include "debug.h"
+#include "display.h"
 
 /**
  * @brief Hardware pinout for WiFi expansion board

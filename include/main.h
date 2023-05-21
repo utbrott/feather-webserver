@@ -3,9 +3,9 @@
 
 #include <Arduino.h>
 #include "globals.h"
-#include "display.h"
 #include "wificonfig.h"
 #include "webserver.h"
+#include "display.h"
 
 #define INVERT(x) (x = (x + 1) % 2)
 

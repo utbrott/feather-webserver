@@ -6,6 +6,7 @@ namespace wifi
 {
     void init(void)
     {
+        display::clear();
         debug::println(debug::INFO, "Trying to init WiFi module...");
         WiFi.setPins(WIFISHIELD_PINS);
 
@@ -22,7 +23,7 @@ namespace wifi
         pinMode(LED_BUILTIN, OUTPUT);
         debug::println(debug::INFO, "Attempting connection to: " + String(WIFI_SSID));
 
-        /* TODO: Display on screen */
+        display::println("Connecting...", 0, 0, display::font_6x8);
 
         while (WiFi.status() != WL_CONNECTED)
         {
@@ -38,7 +39,8 @@ namespace wifi
 
         printStatus();
 
-        /* TODO: Display on screen */
+        display::clear();
+        display::println("Connected", 0, 0, display::font_6x8);
     }
 
     void printStatus(void)
