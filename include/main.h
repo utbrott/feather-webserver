@@ -7,6 +7,7 @@
 #include "webserver.h"
 #include "display.h"
 
+#define I2C_ADDR 0x31
 #define CLIENT_TIMEOUT 2000
 
 extern StoredData_t data;
