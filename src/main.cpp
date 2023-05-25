@@ -22,9 +22,10 @@ void setup()
     Wire.onReceive(receiveEvent);
     Serial.begin(115200);
 
-    display::init();
-    display::initIo();
-    display::clear();
+    // TODO: Use u8g2 to get display back?
+    // display::init();
+    // display::initIo();
+    // display::clear();
 
     wifi::init();
     webserver::init();
