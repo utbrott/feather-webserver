@@ -1,6 +1,6 @@
 #include "main.h"
 
-StoredData_t data = {{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}};
+StoredData_t storedData = {{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}};
 StoredData_t dummy = {{25.4, 26.4, 19.8}, {1000.5, 1001.2, 999.9}, {35.1, 36.2, 27.4}};
 u32 timeoutTimer = 0;
 
@@ -10,15 +10,14 @@ void receiveEvent(int bytesRead)
     String recv;
     while (Wire.available() > 0)
     {
-        char c = Wire.read();
-        recv += c;
+        char recvChar = Wire.read();
+        recv += recvChar;
     }
 
-    Serial.println(recv);
-    u8 dataCount, typeCount;
+    // TODO: This can be optimized
+    u8 dataCount = 0, typeCount = 0;
     String datatype[3];
     String data[DATA_COUNT];
-    u16 value[DATA_COUNT];
 
     while (recv.length() > 0)
     {
@@ -52,8 +51,20 @@ void receiveEvent(int bytesRead)
 
     for (u8 i = 0; i < ARRAYSIZE(data); ++i)
     {
-        value[i] = data[i].toInt();
-        Serial.println(value[i]);
+        if (i < 3)
+        {
+            storedData.temperature[i % 3] = (f32)(data[i].toInt() / 100.0f);
+            continue;
+        }
+        if (i >= 3 && i < 6)
+        {
+            storedData.pressure[i % 3] = (f32)(data[i].toInt());
+            continue;
+        }
+        if (i >= 6)
+        {
+            storedData.humidity[i % 3] = (f32)(data[i].toInt() / 100.0f);
+        }
     }
 
     // TODO: Without dynamic memory alloc, needs fixing to work
@@ -112,14 +123,13 @@ void loop()
             }
 
             char c = wifi::client.read();
-            Serial.write(c);
             webserver::header += c;
 
             if (c == '\n')
             {
                 if (currentLine.length() == 0)
                 {
-                    webserver::serve(&dummy);
+                    webserver::serve(&storedData);
                     break;
                 }
                 currentLine = "";
@@ -131,6 +141,5 @@ void loop()
         }
         webserver::header = "";
         wifi::client.stop();
-        Serial.println();
     }
 }
