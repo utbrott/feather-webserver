@@ -15,4 +15,6 @@
 extern StoredData_t data;
 extern u32 timeoutTimer;
 
+void i2cReceive(int byteCount);
+
 #endif /* MAIN_H */
