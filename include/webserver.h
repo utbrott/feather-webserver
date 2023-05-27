@@ -5,7 +5,6 @@
 #include <SPI.h>
 #include <WiFi101.h>
 #include "wificonfig.h"
-#include "display.h"
 #include "webpage.h"
 
 #define SERVER_PORT 80

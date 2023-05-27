@@ -5,7 +5,6 @@
 #include "globals.h"
 #include "wificonfig.h"
 #include "webserver.h"
-#include "display.h"
 
 #ifndef I2C_ADDR
 #define I2C_ADDR 0x31

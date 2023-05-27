@@ -96,14 +96,8 @@ void setup()
     Wire.onReceive(receiveEvent);
     Serial.begin(115200);
 
-    // TODO: Use u8g2 to get display back?
-    // display::init();
-    // display::initIo();
-    // display::clear();
-
     wifi::init();
     webserver::init();
-    attachInterrupt(digitalPinToInterrupt(BTN_A), webserver::printIp, RISING);
 }
 
 void loop()
