@@ -23,9 +23,10 @@ namespace webserver
     extern String header;
 
     void init(void);
-    void printIp(void);
     void serve(StoredData_t *data);
-    void serveData(StoredData_t *data);
+
+    template <typename T, size_t size, size_t length>
+    void printRow(const T (&array)[size], const char (&rowTitleStr)[length]);
 }
 
 #endif /* WEBSERVER_H */

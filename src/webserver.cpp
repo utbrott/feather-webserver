@@ -18,64 +18,48 @@ namespace webserver
 
     void serve(StoredData_t *data)
     {
-        for (u8 i = 0; i < ARRAYSIZE(httpHeader); ++i)
+        for (String line : httpHeader)
         {
-            wifi::client.println(httpHeader[i]);
+            wifi::client.println(line);
         }
         wifi::client.println();
 
-        for (u8 i = 0; i < ARRAYSIZE(webpageHead); ++i)
+        for (String line : webpageHead)
         {
-            wifi::client.println(webpageHead[i]);
+            wifi::client.println(line);
         }
 
         for (u8 i = 0; i < ARRAYSIZE(webpageBody); ++i)
         {
             if (i == BODY_TAB_IDX)
             {
-                serveData(data);
+                printRow(data->temperature, "Temperature [&deg;C]");
+                printRow(data->pressure, "Pressure [hPa]");
+                printRow(data->humidity, "Humidity [%]");
+                printRow(data->failedPercent, "Failed req. [%]");
                 continue; // Skip printing from array
             }
             wifi::client.println(webpageBody[i]);
         }
     }
 
-    void serveData(StoredData_t *data)
+    template <typename T, size_t size, size_t length>
+    void printRow(const T (&array)[size], const char (&rowTitleStr)[length])
     {
-        wifi::client.println("<tr><td>Temperature (&deg;C)</td>");
-        for (u8 i = 0; i < 3; ++i)
-        {
-            wifi::client.println("<td>");
-            wifi::client.println(data->temperature[i]);
-            wifi::client.println("</td>");
-        }
-        wifi::client.println("</tr>");
+        static u8 fmtCharCount = 15;
+        char line[length + fmtCharCount];
 
-        wifi::client.println("<tr><td>Pressure (hPa)</td>");
-        for (u8 i = 0; i < 3; ++i)
-        {
-            wifi::client.println("<td>");
-            wifi::client.println(data->pressure[i]);
-            wifi::client.println("</td>");
-        }
-        wifi::client.println("</tr>");
+        sprintf(line, "<tr><td>%s</td>", rowTitleStr);
+        wifi::client.println(line);
 
-        wifi::client.println("<tr><td>Humidity (%)</td>");
-        for (u8 i = 0; i < 3; ++i)
+        // Template type does not matter, values cast to f32 for display
+        for (T value : array)
         {
-            wifi::client.println("<td>");
-            wifi::client.println(data->humidity[i]);
-            wifi::client.println("</td>");
+            char cell[25];
+            sprintf(cell, "<td>%.1f</td>", (f32)value);
+            wifi::client.println(cell);
         }
-        wifi::client.println("</tr>");
 
-        wifi::client.println("<tr><td>Failed req (%)</td>");
-        for (u8 i = 0; i < 3; ++i)
-        {
-            wifi::client.println("<td>");
-            wifi::client.println(data->failedPercent[i]);
-            wifi::client.println("</td>");
-        }
         wifi::client.println("</tr>");
     }
 }
