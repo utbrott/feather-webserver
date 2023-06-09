@@ -15,6 +15,26 @@
 extern StoredData_t data;
 extern u32 timeoutTimer;
 
+enum DataType
+{
+    TEMPERATURE,
+    PRESSURE,
+    HUMIDITY,
+    FAILPERCENT,
+};
+
+/**
+ * @brief Handles receiving data from MASTER LoRa module over I2C interface.
+ * @param byteCount Amount of bytes being transmitted
+ */
 void i2cReceive(int byteCount);
+
+/**
+ * @brief Decodes string that was transmitted from MASTER module using I2C,
+ * without using dynamic memory alloc.
+ * @param recv Reference to received string
+ * @param data Data structure to be filled with values
+ */
+void decodeStr(String *recv, StoredData_t *data);
 
 #endif /* MAIN_H */

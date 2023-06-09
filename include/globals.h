@@ -18,6 +18,7 @@ typedef struct
     f32 temperature[3];
     f32 pressure[3];
     f32 humidity[3];
+    f32 failedPercent[3];
 } StoredData_t;
 
 #endif /* GLOBALS_H */

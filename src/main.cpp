@@ -1,6 +1,12 @@
 #include "main.h"
 
-StoredData_t storedData = {{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}};
+StoredData_t storedData = {
+    {0.0, 0.0, 0.0},
+    {0.0, 0.0, 0.0},
+    {0.0, 0.0, 0.0},
+    {0.0, 0.0, 0.0},
+};
+
 u32 timeoutTimer = 0;
 
 void setup()
@@ -53,6 +59,7 @@ void loop()
 
 void i2cReceive(int byteCount)
 {
+    // Build a string from I2C transmission
     String recv;
     while (Wire.available() > 0)
     {
@@ -60,78 +67,55 @@ void i2cReceive(int byteCount)
         recv += recvChar;
     }
 
-    // TODO: This can be optimized
-    u8 dataCount = 0, typeCount = 0;
-    String datatype[3];
-    String data[DATA_COUNT];
+    // Decode into values
+    decodeStr(&recv, &storedData);
+}
 
-    while (recv.length() > 0)
+void decodeStr(String *recv, StoredData_t *data)
+{
+    /**
+     * Alloc char array for input string
+     * Add 0 to the end of C string
+     */
+    char recvArray[recv->length() + 1];
+    recv->toCharArray(recvArray, recv->length());
+    recvArray[recv->length()] = 0;
+
+    // Keeps count for each struct member
+    u8 dataCounter[4] = {0, 0, 0, 0};
+
+    /**
+     * Read key-value pairs
+     * Split string on `&` -> each key-value pair
+     * Split pairs on `:` -> key : value
+     */
+    char *keyToken = strtok(recvArray, "&");
+    while (keyToken != NULL)
     {
-        u8 idx = recv.indexOf('\n');
-        if (idx == -1)
+        char *valueToken = strchr(keyToken, ':');
+        if (valueToken != 0)
         {
-            datatype[typeCount++] = recv;
-            break;
-        }
+            *valueToken = 0;
+            int key = atoi(keyToken);
+            ++valueToken;
 
-        datatype[typeCount++] = recv.substring(0, recv.indexOf('\n'));
-        recv = recv.substring(idx + 1);
-    }
-
-    for (u8 i = 0; i < ARRAYSIZE(datatype); ++i)
-    {
-        String str = datatype[i];
-        while (str.length() > 0)
-        {
-            u8 idx = str.indexOf('\t');
-            if (idx == -1)
+            // Assign value from valueToken to correct struct member
+            switch (key)
             {
-                data[dataCount++] = str;
+            case TEMPERATURE:
+                data->temperature[dataCounter[TEMPERATURE]++] = (f32)atoi(valueToken) / 100.0f;
+                break;
+            case PRESSURE:
+                data->pressure[dataCounter[PRESSURE]++] = (f32)atoi(valueToken);
+                break;
+            case HUMIDITY:
+                data->humidity[dataCounter[HUMIDITY]++] = (f32)atoi(valueToken) / 100.0f;
+                break;
+            case FAILPERCENT:
+                data->failedPercent[dataCounter[FAILPERCENT]++] = (f32)atoi(valueToken) / 100.0f;
                 break;
             }
-
-            data[dataCount++] = str.substring(0, str.indexOf('\t'));
-            str = str.substring(idx + 1);
         }
+        keyToken = strtok(NULL, "&");
     }
-
-    for (u8 i = 0; i < ARRAYSIZE(data); ++i)
-    {
-        if (i < 3)
-        {
-            storedData.temperature[i % 3] = (f32)(data[i].toInt() / 100.0f);
-            continue;
-        }
-        if (i >= 3 && i < 6)
-        {
-            storedData.pressure[i % 3] = (f32)(data[i].toInt());
-            continue;
-        }
-        if (i >= 6)
-        {
-            storedData.humidity[i % 3] = (f32)(data[i].toInt() / 100.0f);
-        }
-    }
-
-    // TODO: Without dynamic memory alloc, needs fixing to work
-    // char recvArray[recv.length() + 1];
-    // recv.toCharArray(recvArray, recv.length());
-
-    // u16 recvData[DATA_COUNT];
-    // u8 splitItr = -1; // Array is empty
-
-    // char *datatype = strtok(recvArray, "\n");
-    // while (datatype != NULL)
-    // {
-    //     char *data = strchr(datatype, '\t');
-    //     if (data != 0)
-    //     {
-    //         *data = 0;
-    //         int datatypeId = atoi(datatype);
-    //         ++data;
-    //         int dataval = atoi(data);
-    //         Serial.println(dataval);
-    //     }
-    //     datatype = strtok(NULL, "\n");
-    // }
 }
