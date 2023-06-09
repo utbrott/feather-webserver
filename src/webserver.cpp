@@ -68,5 +68,14 @@ namespace webserver
             wifi::client.println("</td>");
         }
         wifi::client.println("</tr>");
+
+        wifi::client.println("<tr><td>Failed req (%)</td>");
+        for (u8 i = 0; i < 3; ++i)
+        {
+            wifi::client.println("<td>");
+            wifi::client.println(data->failedPercent[i]);
+            wifi::client.println("</td>");
+        }
+        wifi::client.println("</tr>");
     }
 }
