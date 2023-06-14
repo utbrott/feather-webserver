@@ -6,4 +6,4 @@
 include/wificredentials.h
 webserver_page.html
 images/.$*.bkp
-images/.$*.bkp
+images/.$*.dtmp
