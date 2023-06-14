@@ -17,6 +17,33 @@ Developed for Master's Thesis @ WUT Warsaw University of Technology.
 
 ## File structure
 
+```
+.
+├── include
+│   ├── debug.h
+│   ├── globals.h
+│   ├── main.h
+│   ├── webpage.h
+│   ├── webserver.h
+│   ├── wificonfig.h
+│   └── wificredentials.h
+├── src
+│   ├── debug.cpp
+│   ├── main.cpp
+│   ├── webpage.cpp
+│   ├── webserver.cpp
+│   └── wificonfig.cpp
+├── platformio.ini
+└── README.md
+```
+
+- `debug.h` - helper functions for debugging through Serial,
+- `globals.h` - global typedefs,
+- `webpage.h` - structure of the server webpage,
+- `webserver.h` - starting the webserver,
+- `wificonfig.h` - local network connection with WiFi,
+- `wificredentials.h` - credentials for logging in to WiFi (example file in repo).
+
 ## Future development note
 
-Project was built using PlatformIO extension for VSCode and PlatformIO CLI.
+Project was built using PlatformIO Core CLI and PlatformIO IDE for VSCode.
