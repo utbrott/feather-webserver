@@ -27,8 +27,12 @@ void loop()
         timeoutTimer = millis();
         String currentLine = "";
 
-        while (wifi::client.connected() && (millis() - timeoutTimer) <= CLIENT_TIMEOUT)
+        while (wifi::client.connected() &&
+               (millis() - timeoutTimer) <= CLIENT_TIMEOUT)
         {
+            /**
+             * Process request from the connecting client
+             */
             timeoutTimer = millis();
             if (!wifi::client.available())
             {
@@ -103,16 +107,19 @@ void decodeStr(String *recv, StoredData_t *data)
             switch (key)
             {
             case TEMPERATURE:
-                data->temperature[dataCounter[TEMPERATURE]++] = (f32)atoi(valueToken) / 100.0f;
+                data->temperature[dataCounter[TEMPERATURE]++] =
+                    (f32)atoi(valueToken) / 100.0f;
                 break;
             case PRESSURE:
                 data->pressure[dataCounter[PRESSURE]++] = (f32)atoi(valueToken);
                 break;
             case HUMIDITY:
-                data->humidity[dataCounter[HUMIDITY]++] = (f32)atoi(valueToken) / 100.0f;
+                data->humidity[dataCounter[HUMIDITY]++] =
+                    (f32)atoi(valueToken) / 100.0f;
                 break;
             case FAILPERCENT:
-                data->failedPercent[dataCounter[FAILPERCENT]++] = (f32)atoi(valueToken) / 100.0f;
+                data->failedPercent[dataCounter[FAILPERCENT]++] =
+                    (f32)atoi(valueToken) / 100.0f;
                 break;
             }
         }
