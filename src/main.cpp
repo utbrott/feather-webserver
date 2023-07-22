@@ -125,4 +125,12 @@ void decodeStr(String *recv, StoredData_t *data)
         }
         keyToken = strtok(NULL, "&");
     }
+
+    debug::println(debug::INFO, "Transmission counts");
+    for (u8 count : dataCounter)
+    {
+        Serial.print(count);
+        Serial.print(" ");
+    }
+    Serial.println();
 }
